@@ -1,0 +1,246 @@
+body {
+  background-color: #faf7f2;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.navbar {
+  background: linear-gradient(90deg, #fbe8e0, #fff);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.invite-wrapper {
+  max-width: 900px;
+  margin: 0 auto 3rem auto;
+}
+
+/* HERO SECTION */
+.hero-section {
+  padding: 2.5rem 1rem 2rem;
+  border-radius: 1.5rem;
+  background: radial-gradient(circle at top, #ffe7de, #fff);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+}
+
+.hero-subtitle {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.8rem;
+  color: #b27b6c;
+  margin-bottom: 0.5rem;
+}
+
+.hero-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.hero-title span {
+  font-family: "Times New Roman", serif;
+  font-weight: 400;
+  font-size: 2rem;
+  margin: 0 0.35rem;
+}
+
+.hero-date {
+  font-size: 1rem;
+  color: #6b4b3e;
+}
+
+.hero-location {
+  font-size: 0.95rem;
+  color: #8a5d4a;
+}
+
+.hero-countdown-wrapper {
+  margin-top: 1.25rem;
+}
+
+.hero-countdown-label {
+  font-size: 0.9rem;
+  color: #7a6254;
+  margin-bottom: 0.5rem;
+}
+
+/* COUNTDOWN */
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.cd-item {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 0.75rem;
+  padding: 0.6rem 0.8rem;
+  min-width: 65px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.cd-item span {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #5d3b2b;
+}
+
+.cd-item small {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9c7d6e;
+}
+
+/* SECTION CARD */
+.section-card {
+  background: #fff;
+  border-radius: 1.2rem;
+  padding: 1.75rem 1.25rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #5b3b2b;
+}
+
+.section-label {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #a27a63;
+  margin-bottom: 0.4rem;
+}
+
+/* GREETING */
+.guest-name {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #4a3022;
+  margin-bottom: 0.5rem;
+}
+
+.guest-note {
+  font-size: 0.95rem;
+  color: #7a6254;
+}
+
+/* DETAIL ACARA BOX */
+.detail-box {
+  border-radius: 0.9rem;
+  padding: 1rem 1.1rem;
+  background: #fff7f2;
+  border: 1px solid #f4ded2;
+}
+
+.detail-box h5 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #5d3b2b;
+}
+
+/* MAPS */
+.maps-wrapper {
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid #f1ddd2;
+}
+
+/* FORMS */
+.rsvp-form .form-label,
+.guestbook-form .form-label {
+  font-size: 0.9rem;
+  color: #6e4b39;
+}
+
+.btn-primary {
+  background-color: #b87055;
+  border-color: #b87055;
+}
+
+.btn-primary:hover {
+  background-color: #9f5c44;
+  border-color: #9f5c44;
+}
+
+.btn-success {
+  background-color: #4c956c;
+  border-color: #4c956c;
+}
+
+.btn-success:hover {
+  background-color: #3f7d5a;
+  border-color: #3f7d5a;
+}
+
+/* GUESTBOOK LIST */
+.wishes-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.wish-item {
+  padding: 0.7rem 0.8rem;
+  border-radius: 0.75rem;
+  background: #fff9f5;
+  border: 1px solid #f3dfd3;
+  margin-bottom: 0.6rem;
+}
+
+.wish-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 0.2rem;
+}
+
+/* GALLERY */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.6rem;
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: 0.9rem;
+  overflow: hidden;
+  background: #eee;
+}
+
+.gallery-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.25s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+.gallery-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.3rem 0.5rem;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.5));
+  font-size: 0.75rem;
+  color: #fff;
+}
+
+/* RESPONSIVE */
+@media (max-width: 576px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  .section-card {
+    padding: 1.4rem 1.1rem;
+  }
+}

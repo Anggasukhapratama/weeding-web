@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3>Dashboard</h3>
+  <div>
+    <a href="{{ url_for('admin_guests') }}" class="btn btn-sm btn-outline-primary">Kelola Tamu</a>
+    <a href="{{ url_for('admin_checkin') }}" class="btn btn-sm btn-outline-success">Check-in</a>
+    <a href="{{ url_for('admin_logout') }}" class="btn btn-sm btn-outline-danger">Logout</a>
+  </div>
+</div>
+
+<div class="row mb-4">
+  <div class="col-md-3 mb-2">
+    <div class="card text-center">
+      <div class="card-body">
+        <h6 class="card-title">Total Tamu</h6>
+        <h3>{{ total_guests }}</h3>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 mb-2">
+    <div class="card text-center">
+      <div class="card-body">
+        <h6 class="card-title">RSVP Hadir</h6>
+        <h3>{{ rsvp_yes }}</h3>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 mb-2">
+    <div class="card text-center">
+      <div class="card-body">
+        <h6 class="card-title">RSVP Tidak Hadir</h6>
+        <h3>{{ rsvp_no }}</h3>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 mb-2">
+    <div class="card text-center">
+      <div class="card-body">
+        <h6 class="card-title">Total Check-in</h6>
+        <h3>{{ total_checkins }}</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h5>Check-in Terbaru</h5>
+<ul class="list-group">
+  {% for chk in latest_checkins %}
+  <li class="list-group-item d-flex justify-content-between">
+    <span>{{ chk.guest.name }}</span>
+    <small>{{ chk.checked_in_at.strftime('%d %b %Y %H:%M') }}</small>
+  </li>
+  {% else %}
+  <li class="list-group-item">Belum ada data check-in.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

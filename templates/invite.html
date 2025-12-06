@@ -1,0 +1,280 @@
+{% extends "base.html" %}
+{% block title %}Undangan untuk {{ guest.invitation_name or guest.name }}{% endblock %}
+
+{% block content %}
+<div class="invite-wrapper">
+
+  <!-- HERO / LANDING -->
+  <section class="hero-section text-center">
+    <p class="hero-subtitle">Undangan Pernikahan</p>
+    <h1 class="hero-title">
+      {{ bride_name }} <span>&amp;</span> {{ groom_name }}
+    </h1>
+    <p class="hero-date">
+      {{ wedding_date }} &bullet; {{ wedding_time }}
+    </p>
+    <p class="hero-location">
+      {{ wedding_location }}
+    </p>
+
+    <div class="hero-countdown-wrapper mt-4">
+      <p class="hero-countdown-label">Menuju hari bahagia:</p>
+      <div id="countdown" class="countdown">
+        <div class="cd-item">
+          <span id="cd-days">0</span>
+          <small>Hari</small>
+        </div>
+        <div class="cd-item">
+          <span id="cd-hours">0</span>
+          <small>Jam</small>
+        </div>
+        <div class="cd-item">
+          <span id="cd-minutes">0</span>
+          <small>Menit</small>
+        </div>
+        <div class="cd-item">
+          <span id="cd-seconds">0</span>
+          <small>Detik</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GREETING NAMA TAMU -->
+  <section class="section-card text-center" id="greeting">
+    <p class="section-label">Kepada Yth.</p>
+    <h3 class="guest-name">
+      {{ guest.invitation_name or guest.name }}
+    </h3>
+    <p class="guest-note">
+      Dengan segala hormat, kami mengundang Bapak/Ibu/Saudara/i untuk hadir
+      dan memberikan doa restu pada acara pernikahan kami.
+    </p>
+  </section>
+
+  <!-- DETAIL ACARA -->
+  <section class="section-card" id="detail-acara">
+    <h4 class="section-title text-center mb-3">Detail Acara</h4>
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <div class="detail-box">
+          <h5>Tanggal & Waktu</h5>
+          <p class="mb-1"><strong>Tanggal:</strong> {{ wedding_date }}</p>
+          <p class="mb-0"><strong>Waktu:</strong> {{ wedding_time }}</p>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="detail-box">
+          <h5>Lokasi</h5>
+          <p class="mb-1"><strong>{{ wedding_location }}</strong></p>
+          <p class="mb-0">{{ wedding_address }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAPS -->
+  {% if maps_embed_url %}
+  <section class="section-card" id="maps">
+    <h4 class="section-title text-center mb-3">Lokasi Acara</h4>
+    <div class="maps-wrapper">
+      <div class="ratio ratio-16x9">
+        <iframe
+          src="{{ maps_embed_url }}"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- RSVP -->
+  <section class="section-card" id="rsvp">
+    <h4 class="section-title text-center mb-3">Konfirmasi Kehadiran (RSVP)</h4>
+    <form method="post" class="rsvp-form">
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Nama</label>
+          <input
+            type="text"
+            class="form-control"
+            value="{{ guest.name }}"
+            disabled
+          />
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Status Kehadiran</label>
+          <select class="form-select" name="rsvp_status">
+            <option value="none" {% if guest.rsvp_status=='none' %}selected{% endif %}>
+              Belum pasti
+            </option>
+            <option value="yes" {% if guest.rsvp_status=='yes' %}selected{% endif %}>
+              Hadir
+            </option>
+            <option value="no" {% if guest.rsvp_status=='no' %}selected{% endif %}>
+              Tidak bisa hadir
+            </option>
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Jumlah yang hadir</label>
+          <input
+            type="number"
+            class="form-control"
+            name="rsvp_guest_count"
+            value="{{ guest.rsvp_guest_count or 1 }}"
+            min="1"
+          />
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Catatan untuk pengantin</label>
+        <textarea
+          class="form-control"
+          name="rsvp_message"
+          rows="2"
+          placeholder="Contoh: Datang berdua, bawa anak, dll."
+        >{{ guest.rsvp_message or '' }}</textarea>
+      </div>
+      <div class="text-end">
+        <button type="submit" class="btn btn-primary px-4">
+          Kirim RSVP
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- GUESTBOOK: FORM -->
+  <section class="section-card" id="guestbook">
+    <h4 class="section-title text-center mb-3">Kirim Ucapan & Doa</h4>
+    <form action="{{ url_for('guestbook') }}" method="post" class="guestbook-form">
+      <input type="hidden" name="guest_code" value="{{ guest.code }}" />
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Nama</label>
+          <input
+            type="text"
+            class="form-control"
+            name="name"
+            value="{{ guest.name }}"
+          />
+        </div>
+        <div class="col-md-6 mb-3 d-flex align-items-end">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              name="is_public"
+              id="is_public"
+              checked
+            />
+            <label class="form-check-label" for="is_public">
+              Tampilkan ucapan di halaman ini
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Ucapan</label>
+        <textarea
+          class="form-control"
+          name="message"
+          rows="3"
+          placeholder="Tulis doa dan ucapan terbaik untuk kedua mempelai..."
+        ></textarea>
+      </div>
+
+      <div class="text-end">
+        <button type="submit" class="btn btn-success px-4">
+          Kirim Ucapan
+        </button>
+      </div>
+    </form>
+
+    {% if public_wishes %}
+    <hr class="my-4" />
+    <h5 class="mb-3 text-center">Ucapan dari Keluarga & Sahabat</h5>
+    <div class="wishes-list">
+      {% for wish in public_wishes %}
+      <div class="wish-item">
+        <div class="wish-header">
+          <strong>{{ wish.name }}</strong>
+          <small class="text-muted">
+            {{ wish.created_at.strftime('%d %b %Y %H:%M') }}
+          </small>
+        </div>
+        <p class="mb-0">{{ wish.message }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </section>
+
+  <!-- GALERI -->
+  {% if photos %}
+  <section class="section-card" id="galeri">
+    <h4 class="section-title text-center mb-3">Galeri Kenangan</h4>
+    <div class="gallery-grid">
+      {% for photo in photos %}
+      <div class="gallery-item">
+        <img src="{{ photo.file_path }}" alt="{{ photo.caption or 'Foto' }}" />
+        {% if photo.caption %}
+        <div class="gallery-caption">
+          {{ photo.caption }}
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    <p class="text-center text-muted mt-2">
+      * Galeri ini dapat diatur dari sisi admin (upload foto ke folder static dan simpan path ke database).
+    </p>
+  </section>
+  {% endif %}
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+// Countdown
+(function() {
+  const dateStr = "{{ wedding_date }} {{ wedding_time }}"; // misal "2025-01-01 10:00"
+  // Browser bisa beda-beda parsing tanggal, idealnya pakai format ISO. Untuk sederhana:
+  const target = new Date(dateStr.replace(/-/g, "/")); // sedikit hack untuk kompatibilitas
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = target.getTime() - now;
+
+    if (distance <= 0) {
+      document.getElementById("countdown").innerHTML =
+        "<p class='mb-0'>Hari ini adalah hari bahagia kami! 🎉</p>";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor(
+      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    );
+    const minutes = Math.floor(
+      (distance % (1000 * 60 * 60)) / (1000 * 60)
+    );
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("cd-days").textContent = days;
+    document.getElementById("cd-hours").textContent = hours;
+    document.getElementById("cd-minutes").textContent = minutes;
+    document.getElementById("cd-seconds").textContent = seconds;
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Check-in Tamu{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3>Check-in Tamu</h3>
+  <a href="{{ url_for('admin_dashboard') }}" class="btn btn-sm btn-outline-secondary">Dashboard</a>
+</div>
+
+<div class="row">
+  <div class="col-md-6 mb-3">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Scan QR / Barcode</h5>
+        <div id="reader" style="width: 100%;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 mb-3">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Hasil Check-in</h5>
+        <div id="checkin-result">
+          <p class="text-muted">Belum ada scan.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://unpkg.com/html5-qrcode"></script>
+<script>
+  const resultDiv = document.getElementById("checkin-result");
+
+  function showResult(message, isSuccess, guest) {
+    let html = `<div class="alert ${isSuccess ? "alert-success" : "alert-danger"}">${message}</div>`;
+    if (guest) {
+      html += `<ul class="list-group">
+        <li class="list-group-item"><strong>Nama:</strong> ${guest.name}</li>
+        <li class="list-group-item"><strong>Code:</strong> ${guest.code}</li>
+        <li class="list-group-item"><strong>RSVP:</strong> ${guest.rsvp_status}</li>
+        <li class="list-group-item"><strong>Jumlah Tamu:</strong> ${guest.rsvp_guest_count}</li>
+      </ul>`;
+    }
+    resultDiv.innerHTML = html;
+  }
+
+  function onScanSuccess(decodedText, decodedResult) {
+    fetch("{{ url_for('api_checkin') }}", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code: decodedText }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        showResult(data.message, data.success, data.guest);
+      })
+      .catch((err) => {
+        showResult("Terjadi kesalahan: " + err, false);
+      });
+  }
+
+  function onScanFailure(error) {}
+
+  const html5QrcodeScanner = new Html5QrcodeScanner("reader", {
+    fps: 10,
+    qrbox: { width: 250, height: 250 },
+  });
+
+  html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+</script>
+{% endblock %}

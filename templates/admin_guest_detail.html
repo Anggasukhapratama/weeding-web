@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Detail Tamu{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('admin_guests') }}" class="btn btn-sm btn-outline-secondary mb-3">&larr; Kembali</a>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <h4>{{ guest.name }}</h4>
+    <p class="mb-1">Code: <strong>{{ guest.code }}</strong></p>
+    <p class="mb-1">Phone: {{ guest.phone or '-' }}</p>
+    <p class="mb-1">Email: {{ guest.email or '-' }}</p>
+    <p class="mb-1">Nama di undangan: {{ guest.invitation_name or guest.name }}</p>
+    <p class="mb-1">
+      RSVP: {{ guest.rsvp_status }} ({{ guest.rsvp_guest_count }} orang)
+    </p>
+    <p class="mb-0">Catatan: {{ guest.rsvp_message or '-' }}</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body text-center">
+    <h5>QR untuk tamu ini</h5>
+    <p class="text-muted">QR berisi code: {{ guest.code }}</p>
+    <img
+      src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ guest.code }}"
+      alt="QR Code"
+    />
+  </div>
+</div>
+{% endblock %}

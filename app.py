@@ -4,7 +4,7 @@ from flask import (
 )
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from config import Config
+from config import Config   # <-- ini sekarang sudah valid lagi
 import string
 import random
 
@@ -374,18 +374,31 @@ def api_checkin():
     )
 
 
-def setup():
+_db_initialized = False
+
+def init_db():
+    """Inisialisasi database & admin default (dipanggil pertama kali)."""
+    global _db_initialized
+    if _db_initialized:
+        return
+
     db.create_all()
+
     # buat admin default jika belum ada
     if not AdminUser.query.filter_by(username="admin").first():
         admin = AdminUser(username="admin", password="admin123")
         db.session.add(admin)
         db.session.commit()
 
+    _db_initialized = True
+
+@app.before_request
+def before_request():
+    # Dipanggil setiap request, tapi init_db() hanya kerja sekali per proses
+    init_db()
+
 
 if __name__ == "__main__":
-    # panggil setup() di dalam app_context
-    with app.app_context():
-        setup()
+    # Lokal tetap bisa jalan seperti biasa
     app.run(debug=True)
 
